@@ -1,9 +1,11 @@
 import React from 'react';
+import ListItem from './ListItem';
 
-const List = () => {
+const List = function({people, func}) {
   return (
     <>
-      <h2>list component</h2>
+      {people.map(person => 
+        <ListItem key={person.id} func={func} {...person}/>)}
     </>
   );
 };
