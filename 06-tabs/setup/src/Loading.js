@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from 'react';
-import { FaAngleDoubleRight } from 'react-icons/fa';
+import React from 'react';
 
 function Loading() {
   return (
