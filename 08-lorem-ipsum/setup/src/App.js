@@ -8,7 +8,7 @@ function App() {
 
   const handleSubmit = function(e) {
     e.preventDefault();
-    let hipsterParag = count;
+    let hipsterParag = parseInt(count);
     if (hipsterParag < 0) {
       hipsterParag = 1;
     } 
@@ -31,9 +31,9 @@ function App() {
           generate it:
         </button>
       </form>
-      {data.slice(0, text).map(paragraph => {
+      {data.slice(0, text).map((paragraph, i) => {
         return (
-          <p>{paragraph} </p>
+          <p key={i} >{paragraph} </p>
         );
       })}
     </section>
