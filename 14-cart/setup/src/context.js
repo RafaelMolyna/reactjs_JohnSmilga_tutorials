@@ -38,7 +38,7 @@ const AppProvider = ({ children }) => {
   //       return data;
   //     })
   //     .catch(err => {
-  //       console.log(err)
+  //       console.log('fetch trying went wrong :('))
   //     });
   // }
   const getItems = async function() {
@@ -48,9 +48,7 @@ const AppProvider = ({ children }) => {
       let data = await resp.json();
       dispatch({type: 'GET_ITEMS', payload: data});
     } catch (error) {
-      console.log('fetch trying went wrong :(')
-      alert('fetch trying went wrong :(')
-    }
+      console.log('fetch trying went wrong :(');
   }
 
   useEffect(() => {
