@@ -49,6 +49,7 @@ const AppProvider = ({ children }) => {
       dispatch({type: 'GET_ITEMS', payload: data});
     } catch (error) {
       console.log('fetch trying went wrong :(');
+    }
   }
 
   useEffect(() => {
