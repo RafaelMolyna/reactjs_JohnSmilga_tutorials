@@ -1,5 +1,7 @@
 import React, { useState, useContext, useEffect } from 'react'
-import { useCallback } from 'react'
+import { useCallback } from 'react';
+import fetchUrl from './functions/fetchUrl';
+import dataTreatDrink from './functions/dataTreatContext';
 
 const url = 'https://www.thecocktaildb.com/api/json/v1/1/search.php?s='
 const AppContext = React.createContext()
@@ -9,35 +11,15 @@ function AppProvider({ children }) {
   const [searchTerm, set_searchTerm] = useState('');
   const [cocktails, set_cocktails] = useState([]);
 
-  const fetchDrinks = useCallback(async function(url) {
-    set_loading(true);
-    try {
-      const response = await fetch(`${url}${searchTerm}`);
-      const data = await response.json();
-      const { drinks } = data;
-      if (drinks) {
-        const filteredDrinks = drinks.map((item) => { 
-          const {
-            idDrink: id, 
-            strDrink: name, 
-            strDrinkThumb: image, 
-            strAlcoholic: info, 
-            strGlass: glass,
-          } = item;
-          return {id, name, image, info, glass};
-        })
-        set_cocktails(filteredDrinks)
-      } else {
-        set_cocktails([])
-      }
-    } catch (error) {
-      console.log(error.message, ' sorry something went wrong...')
-    }
-    set_loading(false);
-  }, [searchTerm])
-  
+  const fetchDrinks = useCallback(fetchUrl, [searchTerm]);
+
   useEffect(() => {
-    fetchDrinks(url);
+    set_loading(true);
+    fetchDrinks(url, searchTerm)
+      .then((resp) => {
+        set_cocktails(dataTreatDrink(resp))
+        set_loading(false);
+      });
   }, [searchTerm, fetchDrinks])
 
   return (

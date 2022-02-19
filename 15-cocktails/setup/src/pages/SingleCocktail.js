@@ -1,6 +1,9 @@
 import React from 'react'
 import Loading from '../components/Loading'
 import { useParams, Link } from 'react-router-dom'
+import fetchDrinks from '../functions/fetchUrl'
+import dataTreatDrink from '../functions/dataTreatDrink'
+
 const url = 'https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i='
 
 const SingleCocktail = function() {
@@ -10,37 +13,11 @@ const SingleCocktail = function() {
 
   React.useEffect(() => {
     set_loading(true);
-    async function getCocktail () {
-      try {
-        const response = await fetch(`${url}${id}`);
-        const data = await response.json();
-        if ( data.drinks ) {
-          const {
-            strDrink: name,
-            strDrinkThumb: image,
-            strAlcoholic: info,
-            strCategory: category,
-            strGlass: glass,
-            strInstructions: instructions,
-          } = data.drinks[0]
-          const ingredients = [];
-          for (let i = 1; i <= 15; i++) {
-            const ing = data.drinks[0][`strIngredient${i}`];
-            if (ing) {
-              ingredients.push(ing)
-            }
-          }
-          const drink = {name, image, info, category, glass, instructions, ingredients};
-          set_cocktail(drink);
-        } else {
-          set_cocktail(null)
-        }
-      } catch (error) {
-        console.log(error.message)
-      }
-      set_loading(false)
-    }
-    getCocktail()
+    fetchDrinks(url, id, dataTreatDrink)
+      .then((resp) => {
+        set_cocktail(dataTreatDrink(resp));
+        set_loading(false);
+      });
   }, [id])
 
   if (loading) {

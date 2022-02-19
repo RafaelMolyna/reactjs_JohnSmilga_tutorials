@@ -8,7 +8,6 @@ const SearchForm = function() {
   const searchCocktail = () => {
     set_searchTerm(searchValue.current.value);
   }
-  
   const handleSubmit = (e) => {
     e.preventDefault();
   }
